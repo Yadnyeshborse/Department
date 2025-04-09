@@ -59,6 +59,8 @@ Methods
 8. Top 10 Customers based on number of times they did shoping. 
 
 
+
+
 Once Assignment complete Ask Candidate to Fill these details
 1.Front end : Thymleaf
 2.API :SpringBoot,Spring MVC, Spring JPA, MySQL
