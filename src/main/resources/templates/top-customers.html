@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Top Customers Report</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 30px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        h2 {
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        .table-section {
+            background: white;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .table th {
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+        }
+
+        .table td {
+            text-align: center;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 class="mb-4 text-center">Top Customers Report</h2>
+
+    <!-- Top 5 Customers by Payment -->
+    <div class="table-section">
+        <h4 class="mb-3">Top 5 Customers by Total Payment</h4>
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Customer Name</th>
+                <th>Total Payment</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="c, iterStat : ${top5ByPayment}">
+                <td th:text="${iterStat.count}">1</td>
+                <td th:text="${c.customerName}">Customer Name</td>
+                <td th:text="${c.totalAmount}">0.00</td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(top5ByPayment)}">
+                <td colspan="3" class="text-center text-muted">No data found.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Top 10 Customers by Purchase Count -->
+    <div class="table-section">
+        <h4 class="mb-3">Top 10 Customers by Number of Purchases</h4>
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Customer Name</th>
+                <th>Number of Purchases</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="c, iterStat : ${top10ByCount}">
+                <td th:text="${iterStat.count}">1</td>
+                <td th:text="${c.customerName}">Customer Name</td>
+                <td th:text="${c.purchaseCount}">0</td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(top10ByCount)}">
+                <td colspan="3" class="text-center text-muted">No data found.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

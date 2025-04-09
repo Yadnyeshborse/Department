@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Sales</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        body {
+            background-color: #f1f3f6;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin-top: 40px;
+        }
+
+        .search-box {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+            transition: 0.3s ease;
+        }
+
+        .search-box:hover {
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #34495e;
+        }
+
+        .table-container {
+            margin-top: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .table th {
+            background-color: #212529 !important;
+            color: white !important;
+            text-align: center;
+        }
+
+        .table td {
+            text-align: center;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f8f9fa;
+            transition: background-color 0.3s;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .pagination .page-link {
+            color: #007bff;
+        }
+
+        .pagination .page-link:hover {
+            background-color: #e9ecef;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 class="text-center mb-4">Search Sale Records</h2>
+
+    <form class="row g-3 search-box" method="get" th:action="@{/sale/search}">
+        <div class="col-md-4">
+            <label for="searchField" class="form-label">Search By</label>
+            <select id="searchField" name="field" class="form-select" required>
+                <option value="" disabled selected>Select a field</option>
+                <option value="itemName">Item Name</option>
+                <option value="custName">Customer Name</option>
+                <option value="mobileNo">Mobile Number</option>
+                <option value="amount">Amount</option>
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label for="searchValue" class="form-label">Enter Value</label>
+            <input type="text" id="searchValue" name="value" class="form-control" required>
+        </div>
+
+        <div class="col-md-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100">Search</button>
+        </div>
+    </form>
+
+    <div class="table-container">
+        <table class="table table-bordered table-striped mt-4">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Item</th>
+                <th>Customer</th>
+                <th>Mobile</th>
+                <th>Amount</th>
+                <th>Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="sale, stat : ${sales}">
+                <td th:text="${stat.count}">1</td>
+                <td th:text="${sale.product.name}">Item Name</td>
+                <td th:text="${sale.custName}">Customer</td>
+                <td th:text="${sale.mobileNo}">1234567890</td>
+                <td th:text="${sale.payAmount}">0.00</td>
+                <td th:text="${sale.shopDate}">2025-04-01</td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(sales)}">
+                <td colspan="6" class="text-center text-muted">No records found.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <nav th:if="${totalPages > 1}" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{|/sale/search?field=${param.field}&value=${param.value}&page=${currentPage - 1}|}">
+                    Previous
+                </a>
+            </li>
+
+            <li class="page-item"
+                th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                th:classappend="${i == currentPage} ? 'active'">
+                <a class="page-link"
+                   th:href="@{|/sale/search?field=${param.field}&value=${param.value}&page=${i}|}"
+                   th:text="${#numbers.formatInteger(i + 1, 0)}">
+                </a>
+            </li>
+
+            <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{|/sale/search?field=${param.field}&value=${param.value}&page=${currentPage + 1}|}">
+                    Next
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchField = document.getElementById("searchField");
+        const searchValue = document.getElementById("searchValue");
+
+        searchField.addEventListener("change", () => {
+            let placeholder = "Enter value";
+            switch (searchField.value) {
+                case "itemName":
+                    placeholder = "Enter item name";
+                    break;
+                case "custName":
+                    placeholder = "Enter customer name";
+                    break;
+                case "mobileNo":
+                    placeholder = "Enter mobile number";
+                    break;
+                case "amount":
+                    placeholder = "Enter amount (e.g. 100.00)";
+                    break;
+            }
+            searchValue.placeholder = placeholder;
+        });
+    });
+</script>
+</body>
+</html>

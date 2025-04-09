@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Buy Product</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4e73df;
+            --success-color: #1cc88a;
+            --danger-color: #e74a3b;
+            --secondary-color: #858796;
+            --border-radius: 0.5rem;
+            --box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: #f8f9fc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 2rem;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            max-width: 800px;
+            margin: 0 auto;
+            transition: var(--transition);
+        }
+
+        .container:hover {
+            box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eaecef;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #495057;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control, .form-select {
+            padding: 0.75rem 1rem;
+            border-radius: var(--border-radius);
+            border: 1px solid #d1d7e0;
+            transition: var(--transition);
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+        }
+
+        .btn-success:hover {
+            background-color: #17a673;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: #6c757d;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .text-danger {
+            color: var(--danger-color) !important;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        input[type="number"], input[type="date"], input[type="tel"] {
+            -moz-appearance: textfield;
+        }
+
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="date"]::-webkit-outer-spin-button,
+        input[type="date"]::-webkit-inner-spin-button,
+        input[type="tel"]::-webkit-outer-spin-button,
+        input[type="tel"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .text-center {
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .container {
+                padding: 1.5rem;
+            }
+
+            .col-md-6, .col-12 {
+                margin-bottom: 1rem;
+            }
+
+            .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Buy Product</h2>
+
+    <form th:action="@{/submitSale}" method="post" th:object="${saleDetails}" class="row g-3">
+        <!-- For update -->
+        <input type="hidden" th:field="*{item_id}"/>
+
+        <!-- Customer Info -->
+        <div class="col-md-6">
+            <label for="custName" class="form-label">Customer Name</label>
+            <input type="text" th:field="*{custName}" id="custName" class="form-control" required/>
+        </div>
+
+        <div class="col-md-6">
+            <label for="mobileNo" class="form-label">Mobile Number</label>
+            <input type="tel" th:field="*{mobileNo}" id="mobileNo" class="form-control" required/>
+        </div>
+
+        <div class="col-md-6">
+            <label for="emailId" class="form-label">Email</label>
+            <input type="email" th:field="*{emailId}" id="emailId" class="form-control"/>
+        </div>
+
+        <div class="col-md-6">
+            <label for="shopDate" class="form-label">Shop Date</label>
+            <input type="date" th:field="*{shopDate}" id="shopDate" class="form-control" required/>
+        </div>
+
+        <!-- Address -->
+        <div class="col-12">
+            <label for="address" class="form-label">Address</label>
+            <textarea th:field="*{address}" id="address" class="form-control" required></textarea>
+        </div>
+
+        <!-- State -->
+        <div class="col-md-6">
+            <label for="state" class="form-label">State</label>
+            <select th:field="*{state}" id="state" class="form-select" required>
+                <option value="" disabled selected>Select state</option>
+                <option th:each="stateOption : ${states}"
+                        th:value="${stateOption}"
+                        th:text="${stateOption}">
+                </option>
+            </select>
+        </div>
+
+        <!-- DOB -->
+        <div class="col-md-6">
+            <label for="dob" class="form-label">Date of Birth</label>
+            <input type="date" th:field="*{dob}" id="dob" class="form-control" required/>
+        </div>
+
+        <!-- Product Info -->
+        <div class="col-md-6">
+            <label for="productName" class="form-label">Selected Product</label>
+            <input type="text" id="productName" class="form-control" th:value="${selectedItem.name}" readonly/>
+            <input type="hidden" th:field="*{product.id}"/>
+        </div>
+
+        <!-- Quantity -->
+        <div class="col-md-6">
+            <label for="quantity" class="form-label">Quantity</label>
+            <input type="number" th:field="*{quantity}" id="quantity" class="form-control" min="1" required/>
+        </div>
+
+        <!-- Price -->
+        <div class="col-md-6">
+            <label for="price" class="form-label">Price</label>
+            <input type="number" th:field="*{price}" id="price" class="form-control" step="0.01" readonly/>
+        </div>
+
+        <!-- Pay Amount -->
+        <div class="col-md-6">
+            <label for="payAmount" class="form-label">Pay Amount</label>
+            <input type="number" th:field="*{payAmount}" id="payAmount" class="form-control" step="0.01" readonly/>
+
+            <!-- Warning if minor -->
+            <div id="minorWarning" class="text-danger mt-1" style="display: none;">
+                Minors can only shop for up to ₹1000.
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="col-12 text-center">
+            <button type="submit" class="btn btn-success px-5 me-2">
+                <i class="bi bi-cart-check me-2"></i>Buy
+            </button>
+            <a th:href="@{/getAll}" class="btn btn-secondary px-5">
+                <i class="bi bi-x-circle me-2"></i>Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+<!-- Minor JS Logic -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const priceInput = document.getElementById("price");
+        const quantityInput = document.getElementById("quantity");
+        const payAmountInput = document.getElementById("payAmount");
+        const dobInput = document.getElementById("dob");
+        const buyButton = document.querySelector("button[type='submit']");
+        const warningDiv = document.getElementById("minorWarning");
+
+        function getAgeFromDOB(dob) {
+            const birthDate = new Date(dob);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const m = today.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age;
+        }
+
+        function updatePayAmount() {
+            const price = parseFloat(priceInput.value) || 0;
+            const quantity = parseInt(quantityInput.value) || 0;
+            const dob = dobInput.value;
+            const amount = price * quantity;
+            payAmountInput.value = amount.toFixed(2);
+
+            if (dob) {
+                const age = getAgeFromDOB(dob);
+                if (age < 18 && amount > 1000) {
+                    buyButton.disabled = true;
+                    warningDiv.style.display = "block";
+                } else {
+                    buyButton.disabled = false;
+                    warningDiv.style.display = "none";
+                }
+            }
+        }
+
+        quantityInput.addEventListener("input", updatePayAmount);
+        dobInput.addEventListener("change", updatePayAmount);
+        updatePayAmount(); // run once on load
+    });
+</script>
+</body>
+</html>

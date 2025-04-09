@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Confirm Purchase</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .card {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .list-group-item {
+            border-bottom: 1px solid #eee;
+            padding: 8px 0;
+        }
+
+        button, a {
+            margin-top: 10px;
+            padding: 8px 12px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+            border: none;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Confirm Your Purchase</h2>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title" th:text="${selectedItem.name}"></h5>
+            <p class="card-text" th:text="${selectedItem.description}"></p>
+        </div>
+    </div>
+
+    <ul>
+        <li class="list-group-item"><strong>Customer:</strong> <span th:text="${saleDetails.custName}"/></li>
+        <li class="list-group-item"><strong>Mobile:</strong> <span th:text="${saleDetails.mobileNo}"/></li>
+        <li class="list-group-item"><strong>Email:</strong> <span th:text="${saleDetails.emailId}"/></li>
+        <li class="list-group-item"><strong>State:</strong> <span th:text="${saleDetails.state}"/></li>
+        <li class="list-group-item"><strong>DOB:</strong> <span th:text="${saleDetails.dob}"/></li>
+        <li class="list-group-item"><strong>Quantity:</strong> <span th:text="${saleDetails.quantity}"/></li>
+        <li class="list-group-item"><strong>Price:</strong> ₹<span th:text="${saleDetails.price}"/></li>
+        <li class="list-group-item"><strong>Payable Amount:</strong> ₹<span th:text="${saleDetails.payAmount}"/></li>
+        <li class="list-group-item"><strong>Shop Date:</strong> <span th:text="${saleDetails.shopDate}"/></li>
+    </ul>
+
+    <form th:action="@{/confirmSale}" method="post">
+        <!-- Hidden fields to preserve data -->
+        <input type="hidden" name="product.id" th:value="${saleDetails.product.id}" />
+        <input type="hidden" name="custName" th:value="${saleDetails.custName}" />
+        <input type="hidden" name="mobileNo" th:value="${saleDetails.mobileNo}" />
+        <input type="hidden" name="emailId" th:value="${saleDetails.emailId}" />
+        <input type="hidden" name="state" th:value="${saleDetails.state}" />
+        <input type="hidden" name="dob" th:value="${saleDetails.dob}" />
+        <input type="hidden" name="quantity" th:value="${saleDetails.quantity}" />
+        <input type="hidden" name="shopDate" th:value="${saleDetails.shopDate}" />
+        <input type="hidden" name="price" th:value="${saleDetails.price}" />
+        <input type="hidden" name="payAmount" th:value="${saleDetails.payAmount}" />
+
+        <button type="submit" class="btn-success">Confirm</button>
+        <a th:href="@{/getAll}" class="btn-secondary">Cancel</a>
+    </form>
+</div>
+</body>
+</html>

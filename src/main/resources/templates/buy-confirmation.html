@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Buy Product</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="container mt-5 text-center">
+    <h2>Purchase Successful!</h2>
+    <p class="lead">Thank you for buying <strong th:text="${product.name}">Product Name</strong>.</p>
+    <img th:src="@{'data:image/jpeg;base64,' + ${product.photo}}" style="max-height:300px;"
+         onerror="this.src='/images/default-product.png'" class="img-thumbnail mb-3">
+    <p class="mb-4">We will deliver your product soon. Please check your email for confirmation.</p>
+    <a href="/getAllProducts" class="btn btn-outline-success">Back to Products</a>
+</div>
+</body>
+</html>
