@@ -61,7 +61,7 @@ Methods
 
 
 
-Once Assignment complete Ask Candidate to Fill these details
+Details:
 1.Front end : Thymleaf
 2.API :SpringBoot,Spring MVC, Spring JPA, MySQL
 3.How many validations done validations [1-5] =All
