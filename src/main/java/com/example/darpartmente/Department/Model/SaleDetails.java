@@ -11,11 +11,6 @@ public class SaleDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long item_id;
-
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Product product;
-
     private String custName;
     private String mobileNo;
     private String address;
@@ -27,6 +22,11 @@ public class SaleDetails {
     private double payAmount;
     private String emailId;
     private LocalDate shopDate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Product product;
+
+
 
     @Override
     public String toString() {

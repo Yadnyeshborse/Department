@@ -137,16 +137,16 @@
     <nav aria-label="Page navigation" class="mt-4">
         <ul class="pagination justify-content-center">
             <li class="page-item" th:if="${pageNumber > 0}">
-                <a class="page-link" th:href="@{'/getAllProducts?page=' + ${pageNumber - 1}}">
+                <a class="page-link" th:href="@{'/getAll?page=' + ${pageNumber - 1}}">
                     &laquo; Previous
                 </a>
             </li>
             <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
                 th:classappend="${pageNumber == i} ? 'active'">
-                <a class="page-link" th:href="@{'/getAllProducts?page=' + ${i}}" th:text="${i + 1}"></a>
+                <a class="page-link" th:href="@{'/getAll?page=' + ${i}}" th:text="${i + 1}"></a>
             </li>
             <li class="page-item" th:if="${pageNumber < totalPages - 1}">
-                <a class="page-link" th:href="@{'/getAllProducts?page=' + ${pageNumber + 1}}">
+                <a class="page-link" th:href="@{'/getAll?page=' + ${pageNumber + 1}}">
                     Next &raquo;
                 </a>
             </li>
